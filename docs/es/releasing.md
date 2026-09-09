@@ -57,7 +57,7 @@ Un secret en el repositorio:
 
 | Secret | Qué es |
 | --- | --- |
-| `NPM_TOKEN` | Token de automatización de npm con permiso de publicación en el scope `@nestjslatam` |
+| `NPM_TOKEN_AOP` | Token de automatización de npm con permiso de publicación en el scope `@nestjslatam` |
 
 Se crea en npmjs.com → *Access Tokens* → *Generate New Token* → **Automation**,
 y se añade en *Settings* → *Secrets and variables* → *Actions*. El
@@ -65,6 +65,16 @@ y se añade en *Settings* → *Secrets and variables* → *Actions*. El
 
 Cada paquete declara `publishConfig.access: public`, así que no hace falta
 ningún flag extra.
+
+## Changesets vacíos
+
+Un changeset vacío satisface la comprobación del pull request, pero no es una
+release por sí mismo: el workflow informa `All changesets are empty; not
+creating PR` y no hace nada. Queda pendiente hasta que llegue un changeset real,
+y entonces el pull request de versionado consume los dos.
+
+Esto solo importa una vez: un changeset vacío en `main` bloquea la primerísima
+publicación, porque el workflow solo publica cuando no hay nada pendiente.
 
 ## La primera publicación
 
