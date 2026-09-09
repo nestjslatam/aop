@@ -83,6 +83,49 @@ sin changesets pendientes publica las versiones que hay en el repositorio
 (`1.0.0` para la familia, `1.1.0` para `@nestjslatam/logreflector-lib`). A
 partir de ahí toda versión sale de un changeset.
 
+## Tags y releases de GitHub
+
+`changesets/action` decide qué se publicó parseando las líneas `New tag:` de la
+salida del publish. `@changesets/cli` 3.x sustituyó esas líneas por un spinner,
+así que la acción cree que no se publicó nada y se salta el push de los tags y
+la apertura de las releases — mientras que el publish sí funciona. Por eso el
+workflow sube los tags y abre una release por tag en pasos propios.
+
+Si alguna vez una publicación no deja tags, se pueden recrear contra el commit
+publicado:
+
+```bash
+git tag -a "@nestjslatam/aop@1.0.0" <commit> -m "@nestjslatam/aop@1.0.0"
+git push origin --tags
+```
+
+## Trusted publishing
+
+Los tokens granulares con escritura caducan a los 90 días, y se está retirando
+su capacidad de publicar. El reemplazo es el
+[trusted publishing](https://docs.npmjs.com/trusted-publishers): npm autentica
+al propio workflow por OIDC, sin ningún secreto de por medio.
+
+Solo se puede configurar sobre un paquete que ya existe, así que no era una
+opción para la primera publicación. Ahora que los siete están publicados, cada
+uno puede declarar este repositorio como su trusted publisher, en
+`npmjs.com/package/<nombre>/access`:
+
+| Campo | Valor |
+| --- | --- |
+| Organization or user | `nestjslatam` |
+| Repository | `aop` |
+| Workflow filename | `release.yml` |
+| Environment | dejar vacío |
+
+El workflow ya lleva el permiso `id-token: write` y actualiza npm a una versión
+que soporta OIDC, así que no hay nada más que tocar. npm prefiere OIDC cuando
+está disponible y cae al token cuando no, lo que hace segura la migración
+paquete a paquete.
+
+Cuando los siete lo declaren, se pueden eliminar `NODE_AUTH_TOKEN` y el secret
+`NPM_TOKEN_AOP`.
+
 ## Publicar a mano
 
 Solo si Actions no está disponible:
