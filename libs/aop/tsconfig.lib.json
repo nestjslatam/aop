@@ -8,9 +8,8 @@
     "strict": true,
     "strictNullChecks": true,
     "noImplicitAny": true,
-    "outDir": "../../dist/libs/aop",
+    "outDir": "./dist",
     "rootDir": "src",
-    "baseUrl": "../..",
     "paths": {}
   },
   "include": [

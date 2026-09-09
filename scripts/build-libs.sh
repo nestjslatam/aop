@@ -1,14 +1,11 @@
 #!/bin/sh
-# Builds every publishable library into dist/libs/<lib> and links them locally.
+# Builds every publishable library into libs/<lib>/dist, in dependency order.
 set -e
 
 . ./scripts/libs.sh
 
 for LIB in $LIBS; do
   echo "building @nestjslatam/$LIB"
-  rm -rf "./dist/libs/$LIB"
+  rm -rf "./libs/$LIB/dist" "./libs/$LIB/tsconfig.lib.tsbuildinfo"
   ./node_modules/.bin/tsc -p "./libs/$LIB/tsconfig.lib.json"
-  sh ./scripts/copy-lib.sh "$LIB"
 done
-
-sh ./scripts/link-libs.sh

@@ -2,7 +2,7 @@
   "name": "@nestjslatam/logreflector-lib",
   "version": "1.1.0",
   "description": "Logging and AOP for NestJS: decorators, interception and reflection",
-  "main": "index.js",
+  "main": "dist/index.js",
   "private": false,
   "keywords": [
     "nestjs",
@@ -24,11 +24,29 @@
     "@nestjslatam/aop.nestjs": "^1.0.0",
     "nestjs-request-context": "^3.0.0"
   },
-  "types": "index.d.ts",
+  "types": "dist/index.d.ts",
   "peerDependencies": {
     "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nestjslatam/aop.git",
+    "directory": "libs/logger"
+  },
+  "homepage": "https://github.com/nestjslatam/aop/tree/main/libs/logger#readme",
+  "bugs": {
+    "url": "https://github.com/nestjslatam/aop/issues"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.lib.json"
   }
 }

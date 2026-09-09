@@ -2,10 +2,17 @@
   "name": "@nestjslatam/aop.aspects.telemetry",
   "version": "1.0.0",
   "description": "OpenTelemetry tracing aspect for @nestjslatam/aop",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "private": false,
-  "keywords": ["nestjs", "aop", "opentelemetry", "tracing", "observability", "tempo"],
+  "keywords": [
+    "nestjs",
+    "aop",
+    "opentelemetry",
+    "tracing",
+    "observability",
+    "tempo"
+  ],
   "author": {
     "name": "Alberto Arroyo Raygada",
     "email": "beyondnet.peru@gmail.com",
@@ -20,5 +27,23 @@
   "peerDependencies": {
     "@opentelemetry/api": "^1.9.0",
     "reflect-metadata": "^0.1.13"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nestjslatam/aop.git",
+    "directory": "libs/aop.aspects.telemetry"
+  },
+  "homepage": "https://github.com/nestjslatam/aop/tree/main/libs/aop.aspects.telemetry#readme",
+  "bugs": {
+    "url": "https://github.com/nestjslatam/aop/issues"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.lib.json"
   }
 }

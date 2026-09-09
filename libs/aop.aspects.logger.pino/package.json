@@ -2,10 +2,16 @@
   "name": "@nestjslatam/aop.aspects.logger.pino",
   "version": "1.0.0",
   "description": "Structured pino sink for @nestjslatam/aop.aspects",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "private": false,
-  "keywords": ["nestjs", "aop", "logger", "pino", "structured-logging"],
+  "keywords": [
+    "nestjs",
+    "aop",
+    "logger",
+    "pino",
+    "structured-logging"
+  ],
   "author": {
     "name": "Alberto Arroyo Raygada",
     "email": "beyondnet.peru@gmail.com",
@@ -19,5 +25,23 @@
   "peerDependencies": {
     "pino": "^8.0.0 || ^9.0.0 || ^10.0.0",
     "reflect-metadata": "^0.1.13"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nestjslatam/aop.git",
+    "directory": "libs/aop.aspects.logger.pino"
+  },
+  "homepage": "https://github.com/nestjslatam/aop/tree/main/libs/aop.aspects.logger.pino#readme",
+  "bugs": {
+    "url": "https://github.com/nestjslatam/aop/issues"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.lib.json"
   }
 }
