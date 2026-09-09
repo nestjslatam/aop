@@ -24,7 +24,8 @@ jobs:
 
       - uses: actions/setup-node@v5
         with:
-          node-version: '20.x'
+          # @changesets/cli requires Node >= 22.11
+          node-version: '22.x'
           cache: npm
           registry-url: 'https://registry.npmjs.org'
 

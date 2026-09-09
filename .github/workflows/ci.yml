@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: ['18.x', '20.x']
+        node: ['18.x', '20.x', '22.x']
 
     steps:
       - uses: actions/checkout@v5
@@ -58,7 +58,8 @@ jobs:
 
       - uses: actions/setup-node@v5
         with:
-          node-version: '20.x'
+          # @changesets/cli requires Node >= 22.11
+          node-version: '22.x'
           cache: npm
 
       - run: npm ci
