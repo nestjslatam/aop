@@ -64,6 +64,16 @@ is provided by Actions itself.
 Every package declares `publishConfig.access: public`, so no extra flag is
 needed.
 
+## Empty changesets
+
+An empty changeset satisfies the pull request check, but it is not a release on
+its own: the workflow reports `All changesets are empty; not creating PR` and
+does nothing. It stays pending until a real changeset arrives, and the version
+pull request then consumes both.
+
+That matters only once: an empty changeset sitting in `main` blocks the very
+first publication, because the workflow only publishes when nothing is pending.
+
 ## The first release
 
 The packages have never been published, so the first run of the workflow with
