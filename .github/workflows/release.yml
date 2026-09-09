@@ -11,6 +11,9 @@ concurrency:
 permissions:
   contents: write
   pull-requests: write
+  # Lets npm authenticate this workflow through OIDC once a package declares it
+  # as a trusted publisher, instead of relying on the token.
+  id-token: write
 
 jobs:
   release:
@@ -29,6 +32,11 @@ jobs:
           cache: npm
           registry-url: 'https://registry.npmjs.org'
 
+      # Trusted publishing needs npm >= 11.5.1, newer than the one bundled with
+      # Node 22.
+      - name: Update npm
+        run: npm install -g npm@latest
+
       - name: Install
         run: npm ci
 
@@ -45,6 +53,33 @@ jobs:
           publish: npm run release
           commit: 'chore: version packages'
           title: 'chore: version packages'
+          # The action cannot tell what was published (see the next step), so it
+          # would create no releases anyway. They are created below instead.
+          createGithubReleases: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN_AOP }}
+
+      # changesets/action decides what shipped by parsing "New tag:" lines out
+      # of the publish output. @changesets/cli 3.x replaced those with a spinner
+      # ("Creating git tags..."), so the action concludes nothing was published
+      # and skips pushing the tags and opening the releases. The tags do exist
+      # in the workspace after the publish, so they are pushed here.
+      - name: Push the tags created by the publish
+        run: git push origin --tags
+
+      - name: Open a GitHub release for every new tag
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          for tag in $(git tag --points-at HEAD); do
+            if gh release view "$tag" >/dev/null 2>&1; then
+              echo "release already exists: $tag"
+              continue
+            fi
+
+            echo "creating release: $tag"
+            gh release create "$tag" \
+              --title "$tag" \
+              --notes "Published to npm: https://www.npmjs.com/package/${tag%@*}"
+          done
