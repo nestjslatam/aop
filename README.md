@@ -77,6 +77,7 @@ That is the whole setup. Everything below is optional.
 | [How-To guide](docs/en/how-to.md) · [Guía How-To](docs/es/how-to.md) | Task recipes: mask passwords, retry an API, send logs to Loki, trace with Tempo, write your own aspect, test decorated code |
 | [Architecture](docs/en/architecture.md) · [Arquitectura](docs/es/architecture.md) | How an intercepted call runs and where the state lives |
 | [Migration from .NET](docs/en/migration.md) · [Migración desde .NET](docs/es/migration.md) | Concept map from `BeyondNet.Aop`, decisions and divergences |
+| [Releasing](docs/en/releasing.md) · [Publicación](docs/es/releasing.md) | How versions and npm publishing work, with Changesets |
 
 New to the library? Read the [quick start](#quick-start), then jump to the
 [How-To guide](docs/en/how-to.md) and come back to the manual when you need the
@@ -140,17 +141,27 @@ to end).
 
 ```bash
 npm install
-npm run build:libs   # builds every package into dist/libs and links them locally
+npm run build:libs   # builds every package into libs/<pkg>/dist
 npm start            # runs the demo app against the built packages
 npm test             # unit tests
 npm run test:e2e     # controller and resolver end to end
 npm run lint
 ```
 
-`build:libs` links `dist/libs/*` into `node_modules/@nestjslatam/*`, which is
-how the compiled demo resolves the packages by name. It runs automatically
-before `npm run build` and `npm start`. Tests and the editor resolve the same
-names against the sources, through the `paths` of `tsconfig.json`.
+It is an npm workspace: `npm install` links every package into
+`node_modules/@nestjslatam/*`, so the demo resolves them by their published
+name. Tests and the editor resolve the same names against the sources, through
+the `paths` of `tsconfig.json`.
+
+Changes that reach a published package need a changeset:
+
+```bash
+npm run changeset
+```
+
+CI runs lint, unit tests, end-to-end tests and the build on Node 18 and 20, and
+publishing is automatic once the version pull request is merged. See
+[Releasing](docs/en/releasing.md).
 
 ---
 

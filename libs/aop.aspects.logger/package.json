@@ -2,8 +2,8 @@
   "name": "@nestjslatam/aop.aspects.logger",
   "version": "1.0.0",
   "description": "Logging sink, templates and serializers for @nestjslatam/aop.aspects",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "private": false,
   "keywords": [
     "nestjs",
@@ -26,5 +26,23 @@
     "@nestjs/common": "^10.0.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nestjslatam/aop.git",
+    "directory": "libs/aop.aspects.logger"
+  },
+  "homepage": "https://github.com/nestjslatam/aop/tree/main/libs/aop.aspects.logger#readme",
+  "bugs": {
+    "url": "https://github.com/nestjslatam/aop/issues"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.lib.json"
   }
 }

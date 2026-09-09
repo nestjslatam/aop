@@ -8,15 +8,17 @@
     "strict": true,
     "strictNullChecks": true,
     "noImplicitAny": true,
-    "outDir": "../../dist/libs/aop.aspects.logger.pino",
+    "outDir": "./dist",
     "rootDir": "src",
-    "baseUrl": "../..",
-    "paths": {
-      "@nestjslatam/aop": ["dist/libs/aop"],
-      "@nestjslatam/aop.aspects": ["dist/libs/aop.aspects"],
-      "@nestjslatam/aop.aspects.logger": ["dist/libs/aop.aspects.logger"]
-    }
+    "paths": {}
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "test", "**/*spec.ts"]
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "test",
+    "**/*spec.ts"
+  ]
 }

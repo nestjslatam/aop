@@ -4,14 +4,15 @@
   "description": "",
   "author": "",
   "private": true,
+  "workspaces": [
+    "libs/*"
+  ],
   "license": "UNLICENSED",
   "scripts": {
     "prebuild": "npm run build:libs",
     "build": "nest build",
     "build:libs": "sh ./scripts/build-libs.sh",
     "build:lib": "npm run build:libs",
-    "release:libs": "sh ./scripts/release-libs.sh",
-    "release:lib": "npm run release:libs",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "prestart": "npm run build:libs",
     "start": "nest start",
@@ -19,11 +20,15 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "lint:ci": "eslint \"{src,apps,libs,test}/**/*.ts\" --max-warnings 0",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "npm run build:libs && changeset publish"
   },
   "dependencies": {
     "@apollo/server": "^4.9.5",
@@ -40,6 +45,7 @@
     "rxjs": "^7.8.1"
   },
   "devDependencies": {
+    "@changesets/cli": "^3.0.2",
     "@nestjs/cli": "^10.0.0",
     "@nestjs/schematics": "^10.0.0",
     "@nestjs/testing": "^10.0.0",

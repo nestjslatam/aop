@@ -5,26 +5,9 @@
     "esModuleInterop": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "outDir": "../../dist/libs/logger",
+    "outDir": "./dist",
     "rootDir": "src",
-    "baseUrl": "../..",
-    "paths": {
-      "@nestjslatam/aop": [
-        "dist/libs/aop"
-      ],
-      "@nestjslatam/aop.aspects": [
-        "dist/libs/aop.aspects"
-      ],
-      "@nestjslatam/aop.aspects.logger": [
-        "dist/libs/aop.aspects.logger"
-      ],
-      "@nestjslatam/aop.nestjs": [
-        "dist/libs/aop.nestjs"
-      ],
-      "@nestjslatam/logreflector-lib": [
-        "dist/libs/logger"
-      ]
-    }
+    "paths": {}
   },
   "include": [
     "src/**/*"

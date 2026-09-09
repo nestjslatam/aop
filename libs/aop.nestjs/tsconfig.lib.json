@@ -8,20 +8,9 @@
     "strict": true,
     "strictNullChecks": true,
     "noImplicitAny": true,
-    "outDir": "../../dist/libs/aop.nestjs",
+    "outDir": "./dist",
     "rootDir": "src",
-    "baseUrl": "../..",
-    "paths": {
-      "@nestjslatam/aop": [
-        "dist/libs/aop"
-      ],
-      "@nestjslatam/aop.aspects": [
-        "dist/libs/aop.aspects"
-      ],
-      "@nestjslatam/aop.aspects.logger": [
-        "dist/libs/aop.aspects.logger"
-      ]
-    }
+    "paths": {}
   },
   "include": [
     "src/**/*"

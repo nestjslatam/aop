@@ -2,10 +2,17 @@
   "name": "@nestjslatam/aop.nestjs",
   "version": "1.0.0",
   "description": "NestJS integration for @nestjslatam/aop: module, decorators and interceptor",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "private": false,
-  "keywords": ["nestjs", "aop", "decorator", "interceptor", "logging", "retry"],
+  "keywords": [
+    "nestjs",
+    "aop",
+    "decorator",
+    "interceptor",
+    "logging",
+    "retry"
+  ],
   "author": {
     "name": "Alberto Arroyo Raygada",
     "email": "beyondnet.peru@gmail.com",
@@ -22,5 +29,23 @@
     "@nestjs/core": "^10.0.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nestjslatam/aop.git",
+    "directory": "libs/aop.nestjs"
+  },
+  "homepage": "https://github.com/nestjslatam/aop/tree/main/libs/aop.nestjs#readme",
+  "bugs": {
+    "url": "https://github.com/nestjslatam/aop/issues"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.lib.json"
   }
 }
