@@ -1,6 +1,6 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { LogMethod, LogSensitiveParam } from '@nestjslatam/logreflector-lib';
 
-import { LogMethod, LogSensitiveParam } from 'libs/logger/src';
 import { InputData } from './input';
 import { AppService } from './app.service';
 
@@ -23,6 +23,17 @@ export class AppResolver {
   @LogMethod({ trackingId: 'trackingId', requestId: 'requestId' })
   postWithOutArgs(): string {
     return `Hello World! without Arguments`;
+  }
+
+  @Query(() => String)
+  @LogMethod({
+    trackingId: 'trackingId',
+    resolveRequestId: (args: any[]) => `order-${args[0]}`,
+  })
+  async retryDemo(@Args('orderId') orderId: string): Promise<string> {
+    void orderId;
+
+    return this.appService.fetchWithRetry();
   }
 
   @Mutation(() => String)

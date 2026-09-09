@@ -16,6 +16,29 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@nestjslatam/aop": [
+        "libs/aop/src"
+      ],
+      "@nestjslatam/aop.aspects": [
+        "libs/aop.aspects/src"
+      ],
+      "@nestjslatam/aop.aspects.logger": [
+        "libs/aop.aspects.logger/src"
+      ],
+      "@nestjslatam/aop.aspects.logger.pino": [
+        "libs/aop.aspects.logger.pino/src"
+      ],
+      "@nestjslatam/aop.nestjs": [
+        "libs/aop.nestjs/src"
+      ],
+      "@nestjslatam/logreflector-lib": [
+        "libs/logger/src"
+      ],
+      "@nestjslatam/aop.aspects.telemetry": [
+        "libs/aop.aspects.telemetry/src"
+      ]
+    }
   }
 }

@@ -1,6 +1,6 @@
 # Reflector Log Library
 
-## Version 1.0.x
+## Version 1.1.x
 
 This library is currently in alpha version. Keep in mind, An alpha version of a software product is a pre-release version that is typically not complete but includes most of the major features. It's often used for internal testing and development purposes.
 
@@ -27,13 +27,53 @@ This library is currently in alpha version. Keep in mind, An alpha version of a 
 
 - if TRACKING behavior is enabled we will be trying to get the tracking ID from the Body in case of HTTP requests. If the tracking ID does not exist we will be generating a new one in a GUID format.
 
+## Packages
+
+The library is now a family of packages ported from the `BeyondNet.Aop` .NET
+solution. See [docs/en/migration.md](docs/en/migration.md) for the full concept
+map, or [docs/es/migration.md](docs/es/migration.md) in Spanish.
+
+| Package | Purpose |
+| --- | --- |
+| [`@nestjslatam/aop`](libs/aop) | Interception primitives: join point, point cut, aspect executor |
+| [`@nestjslatam/aop.aspects`](libs/aop.aspects) | Logger, retry and advice aspects |
+| [`@nestjslatam/aop.aspects.logger`](libs/aop.aspects.logger) | Logging sink, templates and serializers |
+| [`@nestjslatam/aop.aspects.logger.pino`](libs/aop.aspects.logger.pino) | Structured pino sink, ready for Loki and friends |
+| [`@nestjslatam/aop.nestjs`](libs/aop.nestjs) | `AopModule`, decorators and interceptor |
+| [`@nestjslatam/aop.aspects.telemetry`](libs/aop.aspects.telemetry) | OpenTelemetry spans, correlated with the logs |
+| [`@nestjslatam/logreflector-lib`](libs/logger) | v1 facade, re-exports the whole family |
+
+Documentation: [getting started](docs/en/getting-started.md) ·
+[architecture](docs/en/architecture.md) · [migration](docs/en/migration.md)
+(español: [primeros pasos](docs/es/getting-started.md) ·
+[arquitectura](docs/es/architecture.md) · [migración](docs/es/migration.md)).
+
+## Development
+
+```bash
+npm install
+npm run build:libs   # builds every package into dist/libs and links them in node_modules
+npm start            # runs the demo app against the built packages
+npm test             # unit tests
+npm run test:e2e     # controller and resolver end to end
+```
+
+`build:libs` links `dist/libs/*` into `node_modules/@nestjslatam/*`, which is how
+the compiled demo app resolves the packages by name. It runs automatically
+before `npm run build` and `npm start`. Tests and the editor resolve the same
+names against the sources through the `paths` of `tsconfig.json`.
+
 # Features Supported:
 
 - [x] Log method decorator
-- [ ] Log Property decorator
+- [x] Log Parameter decorator (`@LogSensitiveParam`)
+- [x] Log Property decorator (`@LogSensitive`)
+- [x] Retry decorator (`@Retry`)
+- [x] Custom advice decorator (`@UseAdvice`)
+- [x] Aspect ordering and chaining
+- [x] Sync, Promise and Observable methods
 - [ ] Log Class decorator
-- [ ] Log Parameter decorator
-- [ ] Print to console default NESTJS Logger
+- [x] Print to console default NESTJS Logger
 - [ ] Print to console Winston Logger
 - [ ] Print log to CSV
 - [ ] Print log to Txt
@@ -62,17 +102,6 @@ export class AppController {
 **Basic configuration**
 
 ```
-const requestContextInterceptors = [
-  {
-    provide: APP_INTERCEPTOR,
-    useClass: MetaRequestContextInterceptor,
-  },
-  {
-    provide: APP_INTERCEPTOR,
-    useClass: MetaRequestContextExceptionInterceptor,
-  },
-];
-
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -81,11 +110,12 @@ const requestContextInterceptors = [
       useFactory: async (configService: ConfigService) => ({
         behavior: {
           useProduction: configService.get('NODE_ENV') === 'production',
-          useTracking: false,
         },
-        serializer: 'json',
-        extension: 'default',
-        output: 'console',
+        configuration: {
+          serializer: 'json',
+          extension: 'default',
+          output: 'console',
+        },
       }),
       inject: [ConfigService],
     }),
@@ -97,7 +127,11 @@ const requestContextInterceptors = [
   ],
 
   controllers: [AppController],
-  providers: [AppService, AppResolver, ...requestContextInterceptors],
+  providers: [
+    AppService,
+    AppResolver,
+    { provide: APP_INTERCEPTOR, useClass: AopInterceptor },
+  ],
 })
 export class AppModule {}
 ```

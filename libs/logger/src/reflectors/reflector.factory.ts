@@ -1,26 +1,27 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
+import { ISerializer, JsonSerializer } from '@nestjslatam/aop.aspects.logger';
 
 import { ILogReflector, IOptions } from '../interfaces';
 import { LogReflectorDefault } from './reflector-default.service';
-import { LOG_REFLECTOR_OPTIONS } from '../decorators';
-import { ISerializer, JsonSerializer } from '../serializers';
 
-@Injectable()
 export class ReflectorFactory {
-  constructor(
-    @Inject(LOG_REFLECTOR_OPTIONS)
-    private readonly options: IOptions,
-  ) {}
+  private static readonly logger = new Logger(ReflectorFactory.name);
 
-  //TODO: refactor factory using IoC Nest strategy
+  constructor(private readonly options: IOptions) {}
+
   getLogger(): ILogReflector {
-    let serializer: ISerializer = null;
+    return new LogReflectorDefault(this.getSerializer(), this.options);
+  }
 
-    if (this.options.configuration.extension === 'default') {
-      if (this.options.configuration.serializer === 'json') {
-        serializer = new JsonSerializer();
-      }
-      return new LogReflectorDefault(serializer, this.options);
+  private getSerializer(): ISerializer {
+    const serializer = this.options?.configuration?.serializer;
+
+    if (serializer === 'xml') {
+      ReflectorFactory.logger.warn(
+        'The "xml" serializer has no Node equivalent; falling back to JSON.',
+      );
     }
+
+    return new JsonSerializer();
   }
 }

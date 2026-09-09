@@ -4,9 +4,12 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import {
+  AopInterceptor,
+  LogReflectorModule,
+} from '@nestjslatam/logreflector-lib';
 
 import { AppResolver } from './app.resolver';
-import { LogReflectorModule } from 'libs/logger/src';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -20,9 +23,9 @@ import { AppService } from './app.service';
           useProduction: configService.get('NODE_ENV') === 'production',
         },
         configuration: {
-          serializer: 'json',
-          extension: 'default',
-          output: 'console',
+          serializer: 'json' as const,
+          extension: 'default' as const,
+          output: 'console' as const,
           pathFile: 'logs',
         },
       }),
@@ -36,6 +39,10 @@ import { AppService } from './app.service';
   ],
 
   controllers: [AppController],
-  providers: [AppService, AppResolver],
+  providers: [
+    AppService,
+    AppResolver,
+    { provide: APP_INTERCEPTOR, useClass: AopInterceptor },
+  ],
 })
 export class AppModule {}

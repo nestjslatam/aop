@@ -1,9 +1,25 @@
 {
-  "moduleFileExtensions": ["js", "json", "ts"],
-  "rootDir": ".",
+  "moduleFileExtensions": [
+    "js",
+    "json",
+    "ts"
+  ],
+  "rootDir": "..",
   "testEnvironment": "node",
   "testRegex": ".e2e-spec.ts$",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
-  }
+  },
+  "moduleNameMapper": {
+    "^@nestjslatam/aop$": "<rootDir>/libs/aop/src",
+    "^@nestjslatam/aop.aspects$": "<rootDir>/libs/aop.aspects/src",
+    "^@nestjslatam/aop.aspects.logger$": "<rootDir>/libs/aop.aspects.logger/src",
+    "^@nestjslatam/aop.aspects.logger.pino$": "<rootDir>/libs/aop.aspects.logger.pino/src",
+    "^@nestjslatam/aop.nestjs$": "<rootDir>/libs/aop.nestjs/src",
+    "^@nestjslatam/logreflector-lib$": "<rootDir>/libs/logger/src",
+    "^@nestjslatam/aop.aspects.telemetry$": "<rootDir>/libs/aop.aspects.telemetry/src"
+  },
+  "modulePathIgnorePatterns": [
+    "<rootDir>/dist/"
+  ]
 }

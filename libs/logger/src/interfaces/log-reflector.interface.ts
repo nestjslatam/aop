@@ -1,7 +1,12 @@
-import { Parameter, Result } from '../models';
-import { IMetadata } from './metadata.interface';
+import { IMetadata, Parameter, Result } from '@nestjslatam/aop.aspects';
+
 import { IOptions } from './option.interface';
 
+/**
+ * Logging contract published by `@nestjslatam/logreflector-lib` v1.
+ * Kept untouched for backwards compatibility; new sinks should implement
+ * `IAopLogger` from `@nestjslatam/aop.aspects` instead.
+ */
 export interface ILogReflector {
   getOptions(): IOptions;
 
