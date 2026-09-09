@@ -55,7 +55,7 @@ One secret in the repository:
 
 | Secret | What it is |
 | --- | --- |
-| `netjslatam_aop` | npm automation token with publish rights on the `@nestjslatam` scope |
+| `NPM_TOKEN_AOP` | npm automation token with publish rights on the `@nestjslatam` scope |
 
 Create it at npmjs.com → *Access Tokens* → *Generate New Token* → **Automation**,
 and add it in *Settings* → *Secrets and variables* → *Actions*. `GITHUB_TOKEN`

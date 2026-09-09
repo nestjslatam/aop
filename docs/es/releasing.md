@@ -57,7 +57,7 @@ Un secret en el repositorio:
 
 | Secret | Qué es |
 | --- | --- |
-| `netjslatam_aop` | Token de automatización de npm con permiso de publicación en el scope `@nestjslatam` |
+| `NPM_TOKEN_AOP` | Token de automatización de npm con permiso de publicación en el scope `@nestjslatam` |
 
 Se crea en npmjs.com → *Access Tokens* → *Generate New Token* → **Automation**,
 y se añade en *Settings* → *Secrets and variables* → *Actions*. El
