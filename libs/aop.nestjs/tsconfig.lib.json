@@ -1,0 +1,35 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "declaration": true,
+    "esModuleInterop": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "noImplicitAny": true,
+    "outDir": "../../dist/libs/aop.nestjs",
+    "rootDir": "src",
+    "baseUrl": "../..",
+    "paths": {
+      "@nestjslatam/aop": [
+        "dist/libs/aop"
+      ],
+      "@nestjslatam/aop.aspects": [
+        "dist/libs/aop.aspects"
+      ],
+      "@nestjslatam/aop.aspects.logger": [
+        "dist/libs/aop.aspects.logger"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "test",
+    "**/*spec.ts"
+  ]
+}

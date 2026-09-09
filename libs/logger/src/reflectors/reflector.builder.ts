@@ -1,17 +1,23 @@
 import { DynamicModule, Provider } from '@nestjs/common';
+import { AopModule, IAopOptions } from '@nestjslatam/aop.nestjs';
+import { RequestContextModule } from 'nestjs-request-context';
 
-import { IOptions, IOptionsAsync, IOptionsFactory } from '../interfaces';
 import {
   LOG_REFLECTOR_OPTIONS,
   LOG_REFLECTOR_OPTIONS_FACTORY,
-} from '../decorators';
-import { ReflectorFactory } from './reflector.factory';
+} from '../constants';
+import { IOptions, IOptionsAsync, IOptionsFactory } from '../interfaces';
 import { LogReflectorModule } from '../log-reflector.module';
-import { RequestContextModule } from 'nestjs-request-context';
+import { ReflectorFactory } from './reflector.factory';
+
+const toAopOptions = (options?: IOptions): IAopOptions => ({
+  behavior: { useProduction: options?.behavior?.useProduction === true },
+  configuration: { serializer: 'json', output: 'console' },
+});
 
 export class ReflectorBuilder {
   public static forRoot(options: IOptions): DynamicModule {
-    const useLogReflectorFactoryProvider = [
+    const useLogReflectorFactoryProvider: Provider[] = [
       {
         provide: LOG_REFLECTOR_OPTIONS,
         useValue: new ReflectorFactory(options).getLogger(),
@@ -20,16 +26,19 @@ export class ReflectorBuilder {
 
     return {
       module: LogReflectorModule,
+      global: true,
+      imports: [AopModule.forRoot(toAopOptions(options))],
       providers: [...useLogReflectorFactoryProvider],
-      exports: [...useLogReflectorFactoryProvider],
+      exports: [AopModule, ...useLogReflectorFactoryProvider],
     };
   }
 
   static forRootAsync(optionsAsync: IOptionsAsync): DynamicModule {
-    const useLogReflectorFactoryProvider = [
+    const useLogReflectorFactoryProvider: Provider[] = [
       {
         provide: LOG_REFLECTOR_OPTIONS,
-        useFactory: (options) => new ReflectorFactory(options).getLogger(),
+        useFactory: (options: IOptions) =>
+          new ReflectorFactory(options).getLogger(),
         inject: [LOG_REFLECTOR_OPTIONS_FACTORY],
       },
     ];
@@ -37,12 +46,26 @@ export class ReflectorBuilder {
     return {
       module: LogReflectorModule,
       global: true,
-      imports: [RequestContextModule, ...optionsAsync.imports],
-      exports: [...useLogReflectorFactoryProvider],
+      imports: [
+        RequestContextModule,
+        AopModule.forRootAsync({
+          imports: optionsAsync.imports ?? [],
+          useFactory: optionsAsync.useFactory
+            ? async (...args: any[]) =>
+                toAopOptions(await optionsAsync.useFactory(...args))
+            : undefined,
+          useClass: optionsAsync.useClass,
+          useExisting: optionsAsync.useExisting,
+          inject: optionsAsync.inject ?? [],
+          extraProviders: optionsAsync.extraProviders ?? [],
+        }),
+        ...(optionsAsync.imports ?? []),
+      ],
+      exports: [AopModule, ...useLogReflectorFactoryProvider],
       providers: [
         ...ReflectorBuilder.createAsyncProviders(optionsAsync),
         ...useLogReflectorFactoryProvider,
-        ...(optionsAsync.extraProviders || []),
+        ...(optionsAsync.extraProviders ?? []),
       ],
     };
   }
@@ -51,6 +74,7 @@ export class ReflectorBuilder {
     if (optionsAsync.useExisting || optionsAsync.useFactory) {
       return [this.createAsyncOptionsProvider(optionsAsync)];
     }
+
     return [
       this.createAsyncOptionsProvider(optionsAsync),
       {
@@ -63,11 +87,6 @@ export class ReflectorBuilder {
   private static createAsyncOptionsProvider(
     optionsAsync: IOptionsAsync,
   ): Provider {
-    /**
-     * This is going to be a factory provider and import in the list of providers
-     * This provider make the options value available in CashifyProvider. Since it's a provider,
-     * it can be injected in CashifyProvider
-     */
     if (optionsAsync.useFactory) {
       return {
         provide: LOG_REFLECTOR_OPTIONS_FACTORY,
@@ -76,12 +95,6 @@ export class ReflectorBuilder {
       };
     }
 
-    /**
-     * In consumer module, if we use useClass, the give class may have some dependencies,
-     * like ConfigService (and it's module). But they are not available in this module's context.
-     * So, we have an 'imports' object and extraProviders in forRootAsync method.
-     * Then we can dynamically add them from consumer module. See example in example folder.
-     */
     return {
       provide: LOG_REFLECTOR_OPTIONS_FACTORY,
       useFactory: async (optionsFactory: IOptionsFactory) =>

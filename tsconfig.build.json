@@ -1,4 +1,38 @@
 {
   "extends": "./tsconfig.json",
-  "exclude": ["node_modules", "test", "dist", "**/*spec.ts"]
+  "compilerOptions": {
+    "paths": {
+      "@nestjslatam/aop": [
+        "dist/libs/aop"
+      ],
+      "@nestjslatam/aop.aspects": [
+        "dist/libs/aop.aspects"
+      ],
+      "@nestjslatam/aop.aspects.logger": [
+        "dist/libs/aop.aspects.logger"
+      ],
+      "@nestjslatam/aop.aspects.logger.pino": [
+        "dist/libs/aop.aspects.logger.pino"
+      ],
+      "@nestjslatam/aop.nestjs": [
+        "dist/libs/aop.nestjs"
+      ],
+      "@nestjslatam/logreflector-lib": [
+        "dist/libs/logger"
+      ],
+      "@nestjslatam/aop.aspects.telemetry": [
+        "dist/libs/aop.aspects.telemetry"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "test",
+    "dist",
+    "libs",
+    "**/*spec.ts"
+  ]
 }

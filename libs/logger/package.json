@@ -1,12 +1,15 @@
 {
   "name": "@nestjslatam/logreflector-lib",
-  "version": "1.0.13",
-  "description": "Custom Logger library NESTJS and Reflector",
+  "version": "1.1.0",
+  "description": "Logging and AOP for NestJS: decorators, interception and reflection",
   "main": "index.js",
   "private": false,
   "keywords": [
     "nestjs",
-    "logger"
+    "logger",
+    "aop",
+    "decorator",
+    "interception"
   ],
   "author": {
     "name": "Alberto Arroyo Raygada",
@@ -15,12 +18,17 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@nestjs/config": "^3.1.1",
-    "@nestjs/typeorm": "^10.0.0",
-    "@nestjslatam/core-lib": "^1.0.4",
-    "i": "^0.3.7",
-    "npm": "^10.2.4",
+    "@nestjslatam/aop": "^1.0.0",
+    "@nestjslatam/aop.aspects": "^1.0.0",
+    "@nestjslatam/aop.aspects.logger": "^1.0.0",
+    "@nestjslatam/aop.nestjs": "^1.0.0",
+    "nestjs-request-context": "^3.0.0"
+  },
+  "types": "index.d.ts",
+  "peerDependencies": {
+    "@nestjs/common": "^10.0.0",
+    "@nestjs/core": "^10.0.0",
     "reflect-metadata": "^0.1.13",
-    "typeorm": "^0.3.17"
+    "rxjs": "^7.8.1"
   }
 }

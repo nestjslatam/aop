@@ -1,6 +1,7 @@
 import { Controller, Post } from '@nestjs/common';
+import { LogMethod } from '@nestjslatam/logreflector-lib';
+
 import { AppService } from './app.service';
-import { LogMethod } from 'libs/logger/src';
 
 @Controller('appcontrollers')
 export class AppController {

@@ -1,0 +1,24 @@
+{
+  "name": "@nestjslatam/aop.aspects.telemetry",
+  "version": "1.0.0",
+  "description": "OpenTelemetry tracing aspect for @nestjslatam/aop",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "private": false,
+  "keywords": ["nestjs", "aop", "opentelemetry", "tracing", "observability", "tempo"],
+  "author": {
+    "name": "Alberto Arroyo Raygada",
+    "email": "beyondnet.peru@gmail.com",
+    "url": "http://nestjslatam.org/"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@nestjslatam/aop": "^1.0.0",
+    "@nestjslatam/aop.aspects": "^1.0.0",
+    "@nestjslatam/aop.nestjs": "^1.0.0"
+  },
+  "peerDependencies": {
+    "@opentelemetry/api": "^1.9.0",
+    "reflect-metadata": "^0.1.13"
+  }
+}

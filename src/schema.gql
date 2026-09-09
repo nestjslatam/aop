@@ -5,6 +5,7 @@
 type Query {
   postWithArgs(firstName: String!, lastName: String!): String!
   postWithOutArgs: String!
+  retryDemo(orderId: String!): String!
 }
 
 type Mutation {
