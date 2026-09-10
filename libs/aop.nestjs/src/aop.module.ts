@@ -87,11 +87,14 @@ export class AopModule {
           AopFactory.createSerializer(options),
         inject: [AOP_OPTIONS],
       },
-      {
-        provide: AOP_LOGGER,
-        useFactory: (serializer: ISerializer) => new NestLoggerSink(serializer),
-        inject: [AOP_SERIALIZER],
-      },
+      builder.defaultLogger
+        ? { provide: AOP_LOGGER, useExisting: builder.defaultLogger }
+        : {
+            provide: AOP_LOGGER,
+            useFactory: (serializer: ISerializer) =>
+              new NestLoggerSink(serializer),
+            inject: [AOP_SERIALIZER],
+          },
       {
         provide: LoggerAspect,
         useFactory: (moduleRef: ModuleRef, defaultLogger: IAopLogger) =>

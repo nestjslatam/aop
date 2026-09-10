@@ -16,8 +16,18 @@ export interface ILoggerAspectOptions extends IAspectOptions {
   logger?: AopLoggerToken;
   /** `true` logs every argument, an array of indexes logs only those. */
   logArguments?: boolean | number[];
+  /** `false` keeps the returned value out of the log. The success phase still runs. */
   logReturn?: boolean;
   logDuration?: boolean;
+  /**
+   * Decides whether a returned value means failure.
+   *
+   * `onException` only fires when a method throws, and plenty of codebases
+   * return the failure instead — a `Result`, an `Either`, a tuple. Without this
+   * the sink is told the call succeeded, and a failed step is counted as a
+   * completed one. What it returns reaches the sink as `context.failed`.
+   */
+  isFailure?: (returnValue: any, joinPoint: IJoinPoint) => boolean;
   /** `false` lets the exception through without logging it. Defaults to `true`. */
   logException?: boolean;
   trackingId?: string;
