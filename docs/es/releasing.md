@@ -41,18 +41,22 @@ changeset                    CI en verde                        publicado por CI
 
 ## Abrir el pull request de versionado
 
-`GitHub Actions is not permitted to create or approve pull requests` es un
-ajuste del repositorio y de la organización, desactivado por defecto. Mientras
-siga así, el workflow igual sube las versiones, escribe los changelogs y pushea
-la rama `changeset-release/main` — solo hay que abrir el pull request a mano, y
-el log del workflow imprime el enlace.
+Lo abre el propio workflow. Para eso hace falta *Settings -> Actions -> General
+-> Allow GitHub Actions to create and approve pull requests*, activado en la
+organización y en el repositorio; sin eso el workflow igual sube las versiones,
+escribe los changelogs y pushea la rama `changeset-release/main`, y solo queda
+abrir el pull request a mano.
 
-Para automatizar ese último paso, activa *Settings -> Actions -> General ->
-Allow GitHub Actions to create and approve pull requests*, primero en la
-organización y después en el repositorio. GitHub lo marca como riesgo de
-seguridad porque un workflow podría aprobar sus propios pull requests, así que
-conviene acompañarlo de una regla de protección en `main` que exija revisión
-humana.
+GitHub marca ese ajuste como riesgo de seguridad porque un workflow podría
+aprobar sus propios pull requests. En este repositorio el workflow de release ya
+tiene `contents: write`, así que de todos modos podría empujar a `main`
+directamente: dejarle abrir un pull request no le da ningún poder nuevo. La
+protección de `main` es otra: exigir que pasen los checks de CI y bloquear los
+force push y el borrado de la rama.
+
+Exigir revisión aprobatoria sería la guarda más fuerte, pero no es viable con un
+único mantenedor: GitHub no deja aprobar tus propios pull requests, así que
+bloquearía todos los merges.
 
 ## Tipos de salto
 
@@ -65,6 +69,13 @@ humana.
 Los paquetes se versionan de forma independiente. Cuando uno cambia, los que
 dependen de él reciben un `patch` automático, para que sus rangos de dependencia
 interna sigan siendo coherentes.
+
+## Protección de la rama
+
+`main` exige que pasen los checks de CI de Node 18, 20 y 22 antes de un merge, y
+rechaza los force push y el borrado de la rama. No se aplica a los
+administradores, así que un mantenedor nunca queda bloqueado fuera de su propio
+repositorio.
 
 ## Qué necesita CI
 

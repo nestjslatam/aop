@@ -39,17 +39,21 @@ your branch ──PR──▶ develop ──PR──▶ main ──▶ "chore: v
 
 ## Opening the version pull request
 
-`GitHub Actions is not permitted to create or approve pull requests` is a
-repository and organisation setting, off by default. While it stays off, the
-workflow still bumps the versions, writes the changelogs and pushes the
-`changeset-release/main` branch — only the pull request has to be opened by
-hand, and the workflow log prints the link.
+The workflow opens it by itself. That needs *Settings -> Actions -> General ->
+Allow GitHub Actions to create and approve pull requests*, enabled in the
+organisation and in the repository; without it the workflow still bumps the
+versions, writes the changelogs and pushes the `changeset-release/main` branch,
+and only the pull request has to be opened by hand.
 
-To automate that last step, enable *Settings -> Actions -> General -> Allow
-GitHub Actions to create and approve pull requests*, in the organisation first
-and then in the repository. GitHub flags it as a security risk because a
-workflow could approve its own pull requests, so pair it with a branch
-protection rule on `main` that requires a human review.
+GitHub flags the setting as a security risk because a workflow could approve its
+own pull requests. In this repository the release workflow already has
+`contents: write`, so it could push to `main` directly anyway: letting it open a
+pull request grants no new power. `main` is protected instead by requiring the
+CI checks to pass and by blocking force pushes and branch deletion.
+
+Requiring an approving review would be the stronger guard, but it is not usable
+with a single maintainer: GitHub does not let anyone approve their own pull
+request, so it would block every merge.
 
 ## Bump types
 
@@ -62,6 +66,12 @@ protection rule on `main` that requires a human review.
 Packages are versioned independently. When a package changes, the ones
 depending on it get a `patch` automatically, so their internal dependency
 ranges stay coherent.
+
+## Branch protection
+
+`main` requires the CI checks of Node 18, 20 and 22 to pass before a merge, and
+refuses force pushes and branch deletion. It does not enforce this on
+administrators, so a maintainer is never locked out of their own repository.
 
 ## What CI needs
 

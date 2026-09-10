@@ -5,6 +5,15 @@ import { FakeSink, registerAspects } from './aop-test.helper';
 
 class TimeoutError extends Error {}
 
+/** A driver that reports every failure through one class, told apart by a code. */
+class DriverError extends Error {
+  constructor(readonly number: number) {
+    super(`driver error ${number}`);
+  }
+}
+
+const esInterbloqueo = (error: any): boolean => error?.number === 1205;
+
 class Flaky {
   calls = 0;
 
@@ -38,6 +47,24 @@ class Flaky {
     this.calls += 1;
 
     throw new Error('not a timeout');
+  }
+
+  @Retry({ maxAttempts: 3, shouldRetry: esInterbloqueo })
+  soloInterbloqueo(codigo: number): string {
+    this.calls += 1;
+
+    throw new DriverError(codigo);
+  }
+
+  @Retry({
+    maxAttempts: 3,
+    errorTypes: [DriverError],
+    shouldRetry: esInterbloqueo,
+  })
+  ambosFiltros(codigo: number): string {
+    this.calls += 1;
+
+    throw new DriverError(codigo);
   }
 
   @Retry({ maxAttempts: 2, handleException: true })
@@ -98,6 +125,21 @@ describe('RetryAspect', () => {
 
   it('retries only the declared error types', () => {
     expect(() => flaky.onlyTimeouts()).toThrow('not a timeout');
+    expect(flaky.calls).toBe(1);
+  });
+
+  it('retries when the predicate accepts the error', () => {
+    expect(() => flaky.soloInterbloqueo(1205)).toThrow('driver error 1205');
+    expect(flaky.calls).toBe(4);
+  });
+
+  it('does not retry when the predicate rejects the error', () => {
+    expect(() => flaky.soloInterbloqueo(2627)).toThrow('driver error 2627');
+    expect(flaky.calls).toBe(1);
+  });
+
+  it('requires both filters to pass when both are declared', () => {
+    expect(() => flaky.ambosFiltros(2627)).toThrow('driver error 2627');
     expect(flaky.calls).toBe(1);
   });
 
