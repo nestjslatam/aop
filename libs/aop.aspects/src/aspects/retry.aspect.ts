@@ -30,15 +30,17 @@ export class RetryAspect extends OnRetryAspect<
   ): boolean {
     void joinPoint;
 
-    const { maxAttempts = 3, errorTypes } = context.options;
+    const { maxAttempts = 3, errorTypes, shouldRetry } = context.options;
 
     if (attempt >= maxAttempts) return false;
 
     if (errorTypes?.length) {
-      return errorTypes.some((errorType) => error instanceof errorType);
+      if (!errorTypes.some((errorType) => error instanceof errorType)) {
+        return false;
+      }
     }
 
-    return true;
+    return shouldRetry ? shouldRetry(error, attempt) : true;
   }
 
   protected getDelay(context: IRetryAspectContext, attempt: number): number {
