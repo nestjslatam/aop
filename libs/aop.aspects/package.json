@@ -1,6 +1,6 @@
 {
   "name": "@nestjslatam/aop.aspects",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Aspectos listos para usar de @nestjslatam/aop: logging, reintentos y advices",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
