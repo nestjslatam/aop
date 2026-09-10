@@ -1,6 +1,6 @@
 {
   "name": "@nestjslatam/aop.aspects.logger.pino",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Sink estructurado con pino para @nestjslatam/aop.aspects",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -19,8 +19,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@nestjslatam/aop.aspects": "^1.0.0",
-    "@nestjslatam/aop.aspects.logger": "^1.0.0"
+    "@nestjslatam/aop.aspects": "^1.0.1",
+    "@nestjslatam/aop.aspects.logger": "^1.0.1"
   },
   "peerDependencies": {
     "pino": "^8.0.0 || ^9.0.0 || ^10.0.0",

@@ -1,6 +1,6 @@
 {
   "name": "@nestjslatam/aop.aspects",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Aspectos listos para usar de @nestjslatam/aop: logging, reintentos y advices",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -20,7 +20,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@nestjslatam/aop": "^1.0.0"
+    "@nestjslatam/aop": "^1.0.1"
   },
   "peerDependencies": {
     "reflect-metadata": "^0.1.13",
