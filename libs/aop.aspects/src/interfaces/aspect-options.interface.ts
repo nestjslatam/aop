@@ -4,6 +4,14 @@ import { AopLoggerToken } from './aop-logger.interface';
 import { AdviceToken } from './advice.interface';
 
 export interface ILoggerAspectOptions extends IAspectOptions {
+  /**
+   * Business name for this join point, handed to the sink as `context.name`.
+   *
+   * Without it a sink can only say `TargetType.method`, which is where the code
+   * lives, not what the system was doing. `@Trace` already takes one; this is
+   * the same idea for logs, so a trace and its lines can carry one vocabulary.
+   */
+  name?: string;
   /** Sink to log with. Defaults to the one registered as `AOP_LOGGER`. */
   logger?: AopLoggerToken;
   /** `true` logs every argument, an array of indexes logs only those. */

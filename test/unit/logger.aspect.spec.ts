@@ -35,6 +35,11 @@ class Sample {
     return `${user} logged in with ${password.length} chars`;
   }
 
+  @LogMethod({ name: 'cobrar-pedido' })
+  named(): string {
+    return 'ok';
+  }
+
   @LogMethod({ logArguments: false, logReturn: false })
   quiet(): string {
     return 'quiet';
@@ -100,6 +105,20 @@ describe('LoggerAspect', () => {
 
     expect(parameters[0].value).toBe('ada');
     expect(parameters[1].value).toBe('**********');
+  });
+
+  it('hands the business name to the sink', () => {
+    sample.named();
+
+    expect(
+      sink.entries.every((entry) => entry.context.name === 'cobrar-pedido'),
+    ).toBe(true);
+  });
+
+  it('leaves the name undefined when it is not declared', () => {
+    sample.quiet();
+
+    expect(sink.entries[0].context.name).toBeUndefined();
   });
 
   it('honours logArguments and logReturn', () => {

@@ -45,7 +45,10 @@ export class LoggerAspect extends OnMethodBoundaryAspect<
     joinPoint.requestId = requestId ?? joinPoint.requestId;
     joinPoint.trackingId = options.trackingId ?? joinPoint.trackingId;
 
-    context.state.metadata = MetadataHelper.fromJoinPoint(joinPoint);
+    context.state.metadata = {
+      ...MetadataHelper.fromJoinPoint(joinPoint),
+      name: options.name,
+    };
   }
 
   protected onEntry(
