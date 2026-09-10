@@ -1,7 +1,7 @@
 {
   "name": "@nestjslatam/aop.aspects.logger",
   "version": "1.0.0",
-  "description": "Logging sink, templates and serializers for @nestjslatam/aop.aspects",
+  "description": "Sink de logging, plantillas y serializadores para @nestjslatam/aop.aspects",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "private": false,

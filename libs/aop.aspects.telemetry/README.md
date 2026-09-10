@@ -1,18 +1,18 @@
 # @nestjslatam/aop.aspects.telemetry
 
-OpenTelemetry tracing aspect for
+Aspecto de trazas con OpenTelemetry para
 [`@nestjslatam/aop`](https://www.npmjs.com/package/@nestjslatam/aop).
 
-It has no counterpart in the `BeyondNet.Aop` .NET library: it is the tracing
-side of the same `OnMethodBoundaryAspect` that powers `LoggerAspect`.
+No tiene equivalente en la librería .NET `BeyondNet.Aop`: es la cara de trazas
+del mismo `OnMethodBoundaryAspect` que impulsa a `LoggerAspect`.
 
-`@opentelemetry/api` is a peer dependency.
+`@opentelemetry/api` es una peer dependency.
 
 ```bash
 npm install @nestjslatam/aop.aspects.telemetry @opentelemetry/api
 ```
 
-## Registration
+## Registro
 
 ```ts
 import { AopModule } from '@nestjslatam/aop.nestjs';
@@ -26,11 +26,12 @@ import { TraceAspect } from '@nestjslatam/aop.aspects.telemetry';
 export class AppModule {}
 ```
 
-The aspect uses the globally registered tracer provider, so the SDK is set up
-the usual way (`NodeSDK`, `@opentelemetry/auto-instrumentations-node`, or an
-`instrumentation.ts` loaded before the app).
+El aspecto usa el tracer provider registrado globalmente, así que el SDK se
+configura como siempre (`NodeSDK`,
+`@opentelemetry/auto-instrumentations-node`, o un `instrumentation.ts` cargado
+antes que la aplicación).
 
-## Usage
+## Uso
 
 ```ts
 @Trace()
@@ -39,10 +40,10 @@ the usual way (`NodeSDK`, `@opentelemetry/auto-instrumentations-node`, or an
 async pay(orderId: string): Promise<Receipt> { ... }
 ```
 
-`@Trace()` runs outermost by default (`order: 0`), so a single span covers the
-logging and every retry attempt. Options: `name`, `kind`, `tracer`,
-`attributes`, `resolveAttributes(args, joinPoint)`, `recordException` and
-`order`.
+`@Trace()` se ejecuta como el más externo por defecto (`order: 0`), de modo que
+un único span cubre el logging y todos los reintentos. Opciones: `name`, `kind`,
+`tracer`, `attributes`, `resolveAttributes(args, joinPoint)`, `recordException`
+y `order`.
 
 ```ts
 @Trace({
@@ -52,22 +53,32 @@ logging and every retry attempt. Options: `name`, `kind`, `tracer`,
 })
 ```
 
-Every span carries the semantic convention attributes `code.function` and
-`code.namespace`, ends on success and on failure, and gets
-`SpanStatusCode.ERROR` plus the recorded exception when the method throws. The
-error is always rethrown: the aspect observes, it does not swallow.
+Cada span lleva los atributos de convención semántica `code.function` y
+`code.namespace`, se cierra tanto en éxito como en fallo, y recibe
+`SpanStatusCode.ERROR` más la excepción registrada cuando el método lanza. El
+error siempre se relanza: el aspecto observa, no traga.
 
-## Correlation with the logs
+## Correlación con los logs
 
-While the method runs the span is the **active** span, so anything called
-inside it hangs from the same trace, and the aspect writes `traceId` / `spanId`
-on the join point. `LoggerAspect` picks them up, which means:
+Mientras el método corre, el span es el span **activo**, así que todo lo que se
+llame dentro cuelga de la misma traza, y el aspecto escribe `traceId` / `spanId`
+en el join point. `LoggerAspect` los recoge, lo que significa:
 
-- `PinoSink` emits them as structured fields.
-- `NestLoggerSink` appends `[TraceId: ..., SpanId: ...]` to the message.
+- `PinoSink` los emite como campos estructurados.
+- `NestLoggerSink` añade `[TraceId: ..., SpanId: ...]` al mensaje.
 
-That is what lets Grafana jump from a Loki line to the trace in Tempo.
+Eso es lo que permite saltar en Grafana de una línea de Loki a la traza en
+Tempo.
 
 ```json
-{"level":20,"msg":"Start Call.","className":"OrdersService","methodName":"pay","traceId":"4bf92f...","spanId":"00f067..."}
+{"level":20,"msg":"Start Call.","className":"OrdersService","methodName":"pay","traceId":"4bf92f…","spanId":"00f067…"}
 ```
+
+## Documentación
+
+[Guía How-To: trazas](https://github.com/nestjslatam/aop/blob/main/docs/es/how-to.md#trazar-una-llamada-y-saltar-del-log-a-la-traza) ·
+[Manual de uso](https://github.com/nestjslatam/aop/blob/main/docs/es/usage.md)
+
+## Licencia
+
+MIT

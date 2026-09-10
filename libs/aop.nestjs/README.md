@@ -1,10 +1,11 @@
 # @nestjslatam/aop.nestjs
 
-NestJS integration for [`@nestjslatam/aop`](https://www.npmjs.com/package/@nestjslatam/aop).
-Port of `BeyondNet.Aop.DispatchProxy` and of the
-`Microsoft.Extensions.DependencyInjection` installer.
+Integración con NestJS de
+[`@nestjslatam/aop`](https://www.npmjs.com/package/@nestjslatam/aop).
+Port de `BeyondNet.Aop.DispatchProxy` y del instalador de
+`Microsoft.Extensions.DependencyInjection`.
 
-## Registration
+## Registro
 
 ```ts
 import { AopModule } from '@nestjslatam/aop.nestjs';
@@ -15,8 +16,8 @@ import { AopModule } from '@nestjslatam/aop.nestjs';
 export class AppModule {}
 ```
 
-`forRootAsync({ useFactory, inject })` is also available, plus `configure` to
-register your own aspects, advices and sinks:
+También está disponible `forRootAsync({ useFactory, inject })`, además de
+`configure` para registrar tus propios aspectos, advices y sinks:
 
 ```ts
 AopModule.forRoot({
@@ -24,34 +25,43 @@ AopModule.forRoot({
 });
 ```
 
-## Decorators
+## Decoradores
 
-| Decorator | Effect |
+| Decorador | Efecto |
 | --- | --- |
-| `@LogMethod(options?)` | Logs entry, result, exit and exception |
-| `@Retry(options?)` | Retries the method while the error is retryable |
-| `@UseAdvice({ advice })` | Runs a custom advice around the method |
-| `@LogSensitiveParam()` | Masks an argument in the logs |
-| `@LogSensitive()` | Masks a property when serializing |
+| `@LogMethod(opciones?)` | Registra entrada, resultado, salida y excepción |
+| `@Retry(opciones?)` | Reintenta el método mientras el error sea reintentable |
+| `@UseAdvice({ advice })` | Ejecuta un advice propio alrededor del método |
+| `@LogSensitiveParam()` | Enmascara un argumento en los logs |
+| `@LogSensitive()` | Enmascara una propiedad al serializar |
 
-Decorators can be combined; they share a single interception and run as one
-chain ordered by `order`.
+Los decoradores se pueden combinar: comparten una única intercepción y se
+ejecutan como una sola cadena ordenada por `order`.
 
-## Two interception surfaces
+## Dos superficies de intercepción
 
-- **Providers, controllers and resolvers**: the decorator wraps the method. This
-  is the default and the only option for methods that are not handlers.
-- **Controller and resolver handlers**: with `useInterceptor: true` the
-  decorator only writes metadata and `AopInterceptor` runs the aspects, which
-  gives access to the `ExecutionContext` (for example the `x-request-id`
-  header). Register it with `APP_INTERCEPTOR`.
+- **Providers, controllers y resolvers**: el decorador envuelve el método. Es el
+  modo por defecto y la única opción para métodos que no son handlers.
+- **Handlers de controller y resolver**: con `useInterceptor: true` el decorador
+  solo escribe metadata y es `AopInterceptor` quien ejecuta los aspectos, lo que
+  da acceso al `ExecutionContext` (por ejemplo, a la cabecera `x-request-id`).
+  Se registra con `APP_INTERCEPTOR`.
 
-`AopInterceptor` skips handlers already wrapped by a decorator, so a method
-never gets logged twice.
+`AopInterceptor` omite los handlers ya envueltos por un decorador, así que un
+método nunca se loguea dos veces.
 
-## Outside the container
+## Fuera del contenedor
 
-The decorators inject the executor as a property of the class. When the class is
-not managed by NestJS the executor is taken from `AopRegistry`, which
-`AopModule` fills on start up. If neither is available the original method runs
-untouched.
+Los decoradores inyectan el executor como propiedad de la clase. Cuando la clase
+no la gestiona NestJS, el executor se toma de `AopRegistry`, que `AopModule`
+rellena al arrancar. Si no hay ninguno de los dos, se ejecuta el método original
+sin tocar nada.
+
+## Documentación
+
+[Manual de uso](https://github.com/nestjslatam/aop/blob/main/docs/es/usage.md) ·
+[Guía How-To](https://github.com/nestjslatam/aop/blob/main/docs/es/how-to.md)
+
+## Licencia
+
+MIT

@@ -1,7 +1,7 @@
 {
   "name": "@nestjslatam/logreflector-lib",
   "version": "1.1.0",
-  "description": "Logging and AOP for NestJS: decorators, interception and reflection",
+  "description": "Logging y AOP para NestJS: decoradores, intercepción y reflexión",
   "main": "dist/index.js",
   "private": false,
   "keywords": [

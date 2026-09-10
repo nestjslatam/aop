@@ -1,7 +1,7 @@
 {
   "name": "@nestjslatam/aop.nestjs",
   "version": "1.0.0",
-  "description": "NestJS integration for @nestjslatam/aop: module, decorators and interceptor",
+  "description": "Integración con NestJS de @nestjslatam/aop: módulo, decoradores e interceptor",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "private": false,
