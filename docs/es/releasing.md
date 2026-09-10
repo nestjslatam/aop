@@ -39,6 +39,21 @@ changeset                    CI en verde                        publicado por CI
    `changeset publish`, que sube cada paquete cuya versión aún no esté en npm,
    en orden de dependencia, y crea los tags de git.
 
+## Abrir el pull request de versionado
+
+`GitHub Actions is not permitted to create or approve pull requests` es un
+ajuste del repositorio y de la organización, desactivado por defecto. Mientras
+siga así, el workflow igual sube las versiones, escribe los changelogs y pushea
+la rama `changeset-release/main` — solo hay que abrir el pull request a mano, y
+el log del workflow imprime el enlace.
+
+Para automatizar ese último paso, activa *Settings -> Actions -> General ->
+Allow GitHub Actions to create and approve pull requests*, primero en la
+organización y después en el repositorio. GitHub lo marca como riesgo de
+seguridad porque un workflow podría aprobar sus propios pull requests, así que
+conviene acompañarlo de una regla de protección en `main` que exija revisión
+humana.
+
 ## Tipos de salto
 
 | Tipo | Cuándo |

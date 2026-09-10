@@ -37,6 +37,20 @@ your branch ──PR──▶ develop ──PR──▶ main ──▶ "chore: v
    `changeset publish`, which uploads every package whose version is not on npm
    yet, in dependency order, and creates the git tags.
 
+## Opening the version pull request
+
+`GitHub Actions is not permitted to create or approve pull requests` is a
+repository and organisation setting, off by default. While it stays off, the
+workflow still bumps the versions, writes the changelogs and pushes the
+`changeset-release/main` branch — only the pull request has to be opened by
+hand, and the workflow log prints the link.
+
+To automate that last step, enable *Settings -> Actions -> General -> Allow
+GitHub Actions to create and approve pull requests*, in the organisation first
+and then in the repository. GitHub flags it as a security risk because a
+workflow could approve its own pull requests, so pair it with a branch
+protection rule on `main` that requires a human review.
+
 ## Bump types
 
 | Type | When |
