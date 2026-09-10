@@ -1,6 +1,6 @@
 {
   "name": "@nestjslatam/aop.aspects.telemetry",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Aspecto de trazas con OpenTelemetry para @nestjslatam/aop",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -20,9 +20,9 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@nestjslatam/aop": "^1.0.1",
-    "@nestjslatam/aop.aspects": "^1.0.1",
-    "@nestjslatam/aop.nestjs": "^1.0.1"
+    "@nestjslatam/aop": "^1.1.0",
+    "@nestjslatam/aop.aspects": "^1.1.0",
+    "@nestjslatam/aop.nestjs": "^1.1.0"
   },
   "peerDependencies": {
     "@opentelemetry/api": "^1.9.0",

@@ -1,6 +1,6 @@
 {
   "name": "@nestjslatam/aop.nestjs",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Integración con NestJS de @nestjslatam/aop: módulo, decoradores e interceptor",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -20,9 +20,9 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@nestjslatam/aop": "^1.0.1",
-    "@nestjslatam/aop.aspects": "^1.0.1",
-    "@nestjslatam/aop.aspects.logger": "^1.0.1"
+    "@nestjslatam/aop": "^1.1.0",
+    "@nestjslatam/aop.aspects": "^1.1.0",
+    "@nestjslatam/aop.aspects.logger": "^1.1.0"
   },
   "peerDependencies": {
     "@nestjs/common": "^10.0.0 || ^11.0.0",
