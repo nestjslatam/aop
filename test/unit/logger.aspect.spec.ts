@@ -35,6 +35,17 @@ class Sample {
     return `${user} logged in with ${password.length} chars`;
   }
 
+  // Devuelve el fallo en vez de lanzarlo, como `Result`, `Either` o una tupla.
+  @LogMethod({ isFailure: (valor) => valor?.ok === false })
+  devuelveElFallo(): { ok: boolean } {
+    return { ok: false };
+  }
+
+  @LogMethod({ isFailure: (valor) => valor?.ok === false })
+  devuelveExito(): { ok: boolean } {
+    return { ok: true };
+  }
+
   @LogMethod({ name: 'cobrar-pedido' })
   named(): string {
     return 'ok';
@@ -107,6 +118,20 @@ describe('LoggerAspect', () => {
     expect(parameters[1].value).toBe('**********');
   });
 
+  it('marks the call as failed when isFailure says so', () => {
+    sample.devuelveElFallo();
+
+    const llamada = sink.entries.find((entry) => entry.phase === 'call');
+    expect(llamada?.context.failed).toBe(true);
+  });
+
+  it('leaves failed undefined when the value is not a failure', () => {
+    sample.devuelveExito();
+
+    const llamada = sink.entries.find((entry) => entry.phase === 'call');
+    expect(llamada?.context.failed).toBeUndefined();
+  });
+
   it('hands the business name to the sink', () => {
     sample.named();
 
@@ -121,10 +146,13 @@ describe('LoggerAspect', () => {
     expect(sink.entries[0].context.name).toBeUndefined();
   });
 
-  it('honours logArguments and logReturn', () => {
+  // Las dos opciones suprimen el DATO, no la fase, igual que `logArguments: false` deja pasar
+  // `onEntry` sin parametros. Saltarse `onCall` dejaba sin narrar la llamada completada.
+  it('honours logArguments and logReturn without dropping a phase', () => {
     sample.quiet();
 
     expect(sink.entries[0].parameters).toBeUndefined();
-    expect(sink.phases()).toEqual(['entry', 'exit']);
+    expect(sink.phases()).toEqual(['entry', 'call', 'exit']);
+    expect(sink.entries[1].result?.value).toBeUndefined();
   });
 });

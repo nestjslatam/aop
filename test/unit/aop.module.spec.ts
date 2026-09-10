@@ -74,6 +74,31 @@ describe('AopModule', () => {
     AopRegistry.reset();
   });
 
+  // `addLogger` registraba el sink sin hacerlo el predeterminado, asi que un `@LogMethod()` sin
+  // `logger` seguia escribiendo con `NestLoggerSink` y las entradas salian con otra forma.
+  it('makes the registered sink the default one', async () => {
+    const propio = new FakeSink();
+
+    class SinkPropio extends FakeSink {}
+
+    const conSink = await Test.createTestingModule({
+      imports: [
+        AopModule.forRoot({ configure: (b) => b.addLogger(SinkPropio) }),
+      ],
+      providers: [OrdersService],
+    })
+      .overrideProvider(SinkPropio)
+      .useValue(propio)
+      .compile();
+
+    await conSink.init();
+    conSink.get(OrdersService).find('7');
+
+    expect(propio.entries.length).toBeGreaterThan(0);
+
+    await conSink.close();
+  });
+
   it('exposes the executor through the container', () => {
     expect(moduleRef.get(AOP_EXECUTOR)).toBeDefined();
   });

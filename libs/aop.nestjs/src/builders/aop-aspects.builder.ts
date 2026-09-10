@@ -13,6 +13,7 @@ import { IAopAspectsBuilder } from '../interfaces';
 export class AopAspectsBuilder implements IAopAspectsBuilder {
   readonly providers: Provider[] = [];
   readonly aspectTokens: Type<IAspect>[] = [];
+  defaultLogger?: Type<IAopLogger>;
 
   addAspect(aspect: Type<IAspect>): IAopAspectsBuilder {
     this.register(aspect);
@@ -27,8 +28,17 @@ export class AopAspectsBuilder implements IAopAspectsBuilder {
     return this;
   }
 
+  /**
+   * Registers a sink AND makes it the default one.
+   *
+   * It used to only register the class, so `addLogger(MySink)` left every
+   * `@LogMethod()` writing through `NestLoggerSink` until each decorator also
+   * named the sink. Nothing failed; the entries just came out in the wrong
+   * shape, which is worse. The last call wins.
+   */
   addLogger(logger: Type<IAopLogger>): IAopAspectsBuilder {
     this.register(logger);
+    this.defaultLogger = logger;
 
     return this;
   }
