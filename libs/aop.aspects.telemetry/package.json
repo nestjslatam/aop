@@ -1,7 +1,7 @@
 {
   "name": "@nestjslatam/aop.aspects.telemetry",
   "version": "1.0.0",
-  "description": "OpenTelemetry tracing aspect for @nestjslatam/aop",
+  "description": "Aspecto de trazas con OpenTelemetry para @nestjslatam/aop",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "private": false,

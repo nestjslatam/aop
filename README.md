@@ -1,11 +1,13 @@
 # NestJS AOP
 
-**Aspect-oriented programming for NestJS.** Add logging, retries, auditing and
-OpenTelemetry tracing to any method with a decorator, without touching what the
-method does.
+**Español** · [English](README.en.md)
 
-TypeScript port of the [BeyondNet.Aop](https://github.com/beyondnetperu) .NET
-library, rebuilt around the mechanisms NestJS already provides.
+**Programación orientada a aspectos para NestJS.** Añade logging, reintentos,
+auditoría y trazas de OpenTelemetry a cualquier método con un decorador, sin
+tocar lo que el método hace.
+
+Port en TypeScript de la librería .NET [BeyondNet.Aop](https://github.com/beyondnetperu),
+reconstruida sobre los mecanismos que NestJS ya ofrece.
 
 ```ts
 @Injectable()
@@ -19,20 +21,20 @@ export class OrdersService {
 }
 ```
 
-That method is now traced, logged with its arguments, its result and its real
-duration, and retried on failure. Its body never changed.
+Ese método queda trazado, logueado con sus argumentos, su resultado y su
+duración real, y con reintentos ante fallo. Su cuerpo no cambió.
 
 ---
 
-## Install
+## Instalación
 
 ```bash
 npm install @nestjslatam/aop.nestjs
 ```
 
-## Quick start
+## Primeros pasos
 
-**1. Register the module once**, in the root module. It is global.
+**1. Registra el módulo una vez**, en el módulo raíz. Es global.
 
 ```ts
 import { Module } from '@nestjs/common';
@@ -42,7 +44,7 @@ import { AopModule } from '@nestjslatam/aop.nestjs';
 export class AppModule {}
 ```
 
-**2. Decorate a method.**
+**2. Decora un método.**
 
 ```ts
 import { Injectable } from '@nestjs/common';
@@ -57,7 +59,7 @@ export class OrdersService {
 }
 ```
 
-**3. Run it.**
+**3. Ejecútalo.**
 
 ```
 2026-09-09T14:30:18:345 - [RequestId: None] - [OrdersService.cs, find] Start Call. Took 0 ms. Args: [{"index":0,"name":"String","value":"7"}].
@@ -65,124 +67,124 @@ export class OrdersService {
 2026-09-09T14:30:18:357 - [OrdersService.cs, find] End Call. Took 12 ms.
 ```
 
-That is the whole setup. Everything below is optional.
+Eso es toda la configuración. Lo que sigue es opcional.
 
 ---
 
-## Documentation
+## Documentación
 
-| Guide | What it is for |
+| Guía | Para qué sirve |
 | --- | --- |
-| [Usage manual](docs/en/usage.md) · [Manual de uso](docs/es/usage.md) | Complete reference: every decorator, option, token and extension point |
-| [How-To guide](docs/en/how-to.md) · [Guía How-To](docs/es/how-to.md) | Task recipes: mask passwords, retry an API, send logs to Loki, trace with Tempo, write your own aspect, test decorated code |
-| [Architecture](docs/en/architecture.md) · [Arquitectura](docs/es/architecture.md) | How an intercepted call runs and where the state lives |
-| [Migration from .NET](docs/en/migration.md) · [Migración desde .NET](docs/es/migration.md) | Concept map from `BeyondNet.Aop`, decisions and divergences |
-| [Releasing](docs/en/releasing.md) · [Publicación](docs/es/releasing.md) | How versions and npm publishing work, with Changesets |
+| [Manual de uso](docs/es/usage.md) · [en](docs/en/usage.md) | Referencia completa: cada decorador, opción, token y punto de extensión |
+| [Guía How-To](docs/es/how-to.md) · [en](docs/en/how-to.md) | Recetas por tarea: ocultar contraseñas, reintentar una API, mandar logs a Loki, trazar con Tempo, crear tu propio aspecto, testear código decorado |
+| [Arquitectura](docs/es/architecture.md) · [en](docs/en/architecture.md) | Cómo se ejecuta una llamada interceptada y dónde vive el estado |
+| [Migración desde .NET](docs/es/migration.md) · [en](docs/en/migration.md) | Mapa de conceptos desde `BeyondNet.Aop`, decisiones y divergencias |
+| [Publicación](docs/es/releasing.md) · [en](docs/en/releasing.md) | Cómo funcionan las versiones y la publicación en npm, con Changesets |
 
-New to the library? Read the [quick start](#quick-start), then jump to the
-[How-To guide](docs/en/how-to.md) and come back to the manual when you need the
-details.
+¿Primera vez con la librería? Lee los [primeros pasos](#primeros-pasos), salta a
+la [guía How-To](docs/es/how-to.md) y vuelve al manual cuando necesites el
+detalle.
 
 ---
 
-## What you can do
+## Qué puedes hacer
 
-| Need | Decorator | Recipe |
+| Necesidad | Decorador | Receta |
 | --- | --- | --- |
-| Know what a method receives, returns and how long it takes | `@LogMethod()` | [Log a service](docs/en/how-to.md#log-everything-a-service-does) |
-| Tie together the logs of one request | `@LogMethod({ resolveRequestId })` | [Correlate logs](docs/en/how-to.md#correlate-the-logs-of-one-request) |
-| Keep secrets out of the logs | `@LogSensitiveParam()` · `@LogSensitive()` | [Mask sensitive data](docs/en/how-to.md#keep-passwords-out-of-the-logs) |
-| Survive a flaky dependency | `@Retry()` | [Retry a call](docs/en/how-to.md#retry-a-call-that-fails-intermittently) |
-| Query the logs in Grafana | `PinoSink` | [Logs to Loki](docs/en/how-to.md#send-the-logs-to-loki-and-see-them-in-grafana) |
-| Trace a call and link it to its logs | `@Trace()` | [Tracing](docs/en/how-to.md#trace-a-call-and-jump-from-the-log-to-the-trace) |
-| Run your own code around a method | `@UseAdvice()` | [Audit with an advice](docs/en/how-to.md#audit-who-changes-what-with-your-own-advice) |
-| Anything else that cuts across the code | your own aspect | [Build an aspect](docs/en/how-to.md#build-an-aspect-of-your-own) |
+| Saber qué recibe un método, qué devuelve y cuánto tarda | `@LogMethod()` | [Loguear un servicio](docs/es/how-to.md#loguear-todo-lo-que-hace-un-servicio) |
+| Atar entre sí los logs de una misma petición | `@LogMethod({ resolveRequestId })` | [Correlacionar logs](docs/es/how-to.md#correlacionar-los-logs-de-una-petición) |
+| Mantener los secretos fuera de los logs | `@LogSensitiveParam()` · `@LogSensitive()` | [Enmascarar datos sensibles](docs/es/how-to.md#mantener-las-contraseñas-fuera-de-los-logs) |
+| Sobrevivir a una dependencia inestable | `@Retry()` | [Reintentar una llamada](docs/es/how-to.md#reintentar-una-llamada-que-falla-de-forma-intermitente) |
+| Consultar los logs en Grafana | `PinoSink` | [Logs a Loki](docs/es/how-to.md#mandar-los-logs-a-loki-y-verlos-en-grafana) |
+| Trazar una llamada y enlazarla con sus logs | `@Trace()` | [Trazas](docs/es/how-to.md#trazar-una-llamada-y-saltar-del-log-a-la-traza) |
+| Ejecutar código propio alrededor de un método | `@UseAdvice()` | [Auditar con un advice](docs/es/how-to.md#auditar-quién-cambia-qué-con-tu-propio-advice) |
+| Cualquier otra cosa que atraviese el código | tu propio aspecto | [Construir un aspecto](docs/es/how-to.md#construir-un-aspecto-propio) |
 
-Every aspect works on synchronous methods, `Promise` and `Observable`, and
-preserves the shape of the returned value.
+Todos los aspectos funcionan sobre métodos síncronos, `Promise` y `Observable`,
+y conservan la forma del valor devuelto.
 
 ---
 
-## Packages
+## Paquetes
 
-Install `@nestjslatam/aop.nestjs`; it brings the first three with it.
+Instala `@nestjslatam/aop.nestjs`; arrastra los tres primeros.
 
-| Package | Purpose |
+| Paquete | Para qué |
 | --- | --- |
-| [`@nestjslatam/aop`](libs/aop) | Interception core: join point, point cut, aspect executor. No NestJS dependency |
-| [`@nestjslatam/aop.aspects`](libs/aop.aspects) | Logger, retry and advice aspects |
-| [`@nestjslatam/aop.aspects.logger`](libs/aop.aspects.logger) | Default sink, templates and serializers |
-| [`@nestjslatam/aop.nestjs`](libs/aop.nestjs) | `AopModule`, decorators and interceptor |
-| [`@nestjslatam/aop.aspects.logger.pino`](libs/aop.aspects.logger.pino) | Structured pino sink, ready for Loki. Optional |
-| [`@nestjslatam/aop.aspects.telemetry`](libs/aop.aspects.telemetry) | OpenTelemetry spans correlated with the logs. Optional |
-| [`@nestjslatam/logreflector-lib`](libs/logger) | v1 facade, re-exports the whole family |
+| [`@nestjslatam/aop`](libs/aop) | Núcleo de intercepción: join point, point cut, ejecutor de aspectos. Sin dependencia de NestJS |
+| [`@nestjslatam/aop.aspects`](libs/aop.aspects) | Aspectos de logging, reintento y advice |
+| [`@nestjslatam/aop.aspects.logger`](libs/aop.aspects.logger) | Sink por defecto, plantillas y serializadores |
+| [`@nestjslatam/aop.nestjs`](libs/aop.nestjs) | `AopModule`, decoradores e interceptor |
+| [`@nestjslatam/aop.aspects.logger.pino`](libs/aop.aspects.logger.pino) | Sink estructurado con pino, listo para Loki. Opcional |
+| [`@nestjslatam/aop.aspects.telemetry`](libs/aop.aspects.telemetry) | Spans de OpenTelemetry correlacionados con los logs. Opcional |
+| [`@nestjslatam/logreflector-lib`](libs/logger) | Fachada v1, reexporta toda la familia |
 
 ---
 
-## Already using logreflector-lib?
+## ¿Ya usas logreflector-lib?
 
-Version 1.1.0 keeps every export of 1.0.13 with the same types and registers
-`AopModule` underneath, so `@Retry`, `@UseAdvice` and `@Trace` are available
-without touching your imports. Nothing to migrate.
+La versión 1.1.0 conserva todos los exports de la 1.0.13 con los mismos tipos y
+registra `AopModule` por debajo, así que `@Retry`, `@UseAdvice` y `@Trace` están
+disponibles sin tocar tus imports. No hay nada que migrar.
 
 ```bash
 npm install @nestjslatam/logreflector-lib@^1.1.0
 ```
 
-See [upgrading from v1](docs/en/how-to.md#upgrade-from-logreflector-lib-v1).
+Consulta [actualizar desde la v1](docs/es/how-to.md#actualizar-desde-logreflector-lib-v1).
 
 ---
 
-## Development
+## Desarrollo
 
-This repository is the monorepo of the family plus a demo application in
-`src/` (a controller and a GraphQL resolver that exercise logging and retry end
-to end).
+Este repositorio es el monorepo de la familia más una aplicación de demo en
+`src/` (un controller y un resolver de GraphQL que ejercitan logging y reintento
+de extremo a extremo).
 
 ```bash
 npm install
-npm run build:libs   # builds every package into libs/<pkg>/dist
-npm start            # runs the demo app against the built packages
-npm test             # unit tests
-npm run test:e2e     # controller and resolver end to end
+npm run build:libs   # compila cada paquete en libs/<pkg>/dist
+npm start            # levanta la app de demo contra los paquetes compilados
+npm test             # tests unitarios
+npm run test:e2e     # controller y resolver de extremo a extremo
 npm run lint
 ```
 
-It is an npm workspace: `npm install` links every package into
-`node_modules/@nestjslatam/*`, so the demo resolves them by their published
-name. Tests and the editor resolve the same names against the sources, through
-the `paths` of `tsconfig.json`.
+Es un workspace de npm: `npm install` enlaza cada paquete en
+`node_modules/@nestjslatam/*`, de modo que la demo los resuelve por su nombre
+publicado. Los tests y el editor resuelven esos mismos nombres contra las
+fuentes, mediante los `paths` de `tsconfig.json`.
 
-Changes that reach a published package need a changeset:
+Los cambios que alcanzan a un paquete publicado necesitan un changeset:
 
 ```bash
 npm run changeset
 ```
 
-CI runs lint, unit tests, end-to-end tests and the build on Node 18 and 20, and
-publishing is automatic once the version pull request is merged. See
-[Releasing](docs/en/releasing.md).
+CI ejecuta lint, tests unitarios, tests de extremo a extremo y el build en Node
+18, 20 y 22, y la publicación es automática al mergear el pull request de
+versionado. Ver [Publicación](docs/es/releasing.md).
 
 ---
 
-## Status
+## Estado
 
-| Feature | State |
+| Funcionalidad | Estado |
 | --- | --- |
-| Method decorator, parameter and property decorators | ✅ |
-| Retry with fixed and exponential backoff | ✅ |
-| Custom advices and custom aspects | ✅ |
-| Aspect ordering and chaining | ✅ |
-| Sync, `Promise` and `Observable` methods | ✅ |
-| NestJS `Logger` sink | ✅ |
-| Structured pino sink | ✅ |
-| OpenTelemetry spans with log correlation | ✅ |
-| Class decorator | ⬜ |
-| XML output | ⬜ |
+| Decorador de método, de parámetro y de propiedad | ✅ |
+| Reintentos con backoff fijo y exponencial | ✅ |
+| Advices y aspectos propios | ✅ |
+| Orden y encadenamiento de aspectos | ✅ |
+| Métodos síncronos, `Promise` y `Observable` | ✅ |
+| Sink del `Logger` de NestJS | ✅ |
+| Sink estructurado con pino | ✅ |
+| Spans de OpenTelemetry correlacionados con los logs | ✅ |
+| Decorador de clase | ⬜ |
+| Salida XML | ⬜ |
 
-Maintained by [@nestjslatam](https://github.com/nestjslatam) · supported by
+Mantenido por [@nestjslatam](https://github.com/nestjslatam) · con el apoyo de
 [@beyondnetperu](https://github.com/beyondnetperu).
 
-## License
+## Licencia
 
 MIT

@@ -1,18 +1,19 @@
 # @nestjslatam/logreflector-lib
 
-Compatibility facade of **NestJS AOP**. It re-exports the whole
-`@nestjslatam/aop.*` family and keeps every export of version 1.0.13 with the
-same names and types.
+Fachada de compatibilidad de **NestJS AOP**. Reexporta toda la familia
+`@nestjslatam/aop.*` y conserva todos los exports de la versión 1.0.13 con los
+mismos nombres y tipos.
 
-If you are starting a new project, install
+Si empiezas un proyecto nuevo, instala
 [`@nestjslatam/aop.nestjs`](https://www.npmjs.com/package/@nestjslatam/aop.nestjs)
-directly. This package exists so existing applications keep working.
+directamente. Este paquete existe para que las aplicaciones ya en marcha sigan
+funcionando.
 
 ```bash
 npm install @nestjslatam/logreflector-lib
 ```
 
-## What keeps working
+## Lo que sigue funcionando
 
 ```ts
 import { LogMethod, LogReflectorModule, LogSensitiveParam } from '@nestjslatam/logreflector-lib';
@@ -39,13 +40,13 @@ export class AppModule {}
 `LogReflectorModule`, `LogMethod`, `LogSensitiveParam`, `MetadataHelper`,
 `TemplateHelper`, `JsonSerializer`, `ISerializer`, `eLogType`, `ILogReflector`,
 `IMetadata`, `IOptions`, `IOptionsAsync`, `IOptionsFactory`, `ReflectorFactory`,
-`ReflectorBuilder`, `LogReflectorDefault`, the `LOG_REFLECTOR_*` tokens and the
-message templates all keep their signature.
+`ReflectorBuilder`, `LogReflectorDefault`, los tokens `LOG_REFLECTOR_*` y las
+plantillas de mensaje conservan su firma.
 
-## What you gain
+## Lo que ganas
 
-`LogReflectorModule` now registers `AopModule` underneath, so the new
-decorators are available without touching your imports:
+`LogReflectorModule` ahora registra `AopModule` por debajo, así que los
+decoradores nuevos están disponibles sin tocar tus imports:
 
 ```ts
 import { LogMethod, Retry, UseAdvice } from '@nestjslatam/logreflector-lib';
@@ -55,22 +56,22 @@ import { LogMethod, Retry, UseAdvice } from '@nestjslatam/logreflector-lib';
 async fetchRate(): Promise<Rate> { ... }
 ```
 
-## What changed
+## Lo que cambió
 
-Three behaviours changed because they were defects:
+Tres comportamientos cambiaron porque eran defectos:
 
-| Before | Now |
+| Antes | Ahora |
 | --- | --- |
-| `@LogMethod()` without arguments threw | It works; the options are optional |
-| A failing method was invoked a second time | The error is logged once and rethrown |
-| `Took 0 ms` on every line | The real duration |
+| `@LogMethod()` sin argumentos lanzaba | Funciona; las opciones son opcionales |
+| Un método que fallaba se invocaba una segunda vez | El error se loguea una vez y se relanza |
+| `Took 0 ms` en todas las líneas | La duración real |
 
-## Documentation
+## Documentación
 
-- [Usage manual](https://github.com/nestjslatam/aop/blob/main/docs/en/usage.md) · [Manual de uso](https://github.com/nestjslatam/aop/blob/main/docs/es/usage.md)
-- [How-To guide](https://github.com/nestjslatam/aop/blob/main/docs/en/how-to.md) · [Guía How-To](https://github.com/nestjslatam/aop/blob/main/docs/es/how-to.md)
-- [Upgrading from v1](https://github.com/nestjslatam/aop/blob/main/docs/en/how-to.md#upgrade-from-logreflector-lib-v1)
+- [Manual de uso](https://github.com/nestjslatam/aop/blob/main/docs/es/usage.md) · [en](https://github.com/nestjslatam/aop/blob/main/docs/en/usage.md)
+- [Guía How-To](https://github.com/nestjslatam/aop/blob/main/docs/es/how-to.md) · [en](https://github.com/nestjslatam/aop/blob/main/docs/en/how-to.md)
+- [Actualizar desde la v1](https://github.com/nestjslatam/aop/blob/main/docs/es/how-to.md#actualizar-desde-logreflector-lib-v1)
 
-## License
+## Licencia
 
 MIT
