@@ -1,6 +1,6 @@
 {
   "name": "@nestjslatam/aop",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Núcleo de programación orientada a aspectos para NestJS: join points, point cuts, aspectos y ejecutor",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

@@ -1,6 +1,6 @@
 {
   "name": "@nestjslatam/logreflector-lib",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Logging y AOP para NestJS: decoradores, intercepción y reflexión",
   "main": "dist/index.js",
   "private": false,
@@ -18,10 +18,10 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@nestjslatam/aop": "^1.0.1",
-    "@nestjslatam/aop.aspects": "^1.0.1",
-    "@nestjslatam/aop.aspects.logger": "^1.0.1",
-    "@nestjslatam/aop.nestjs": "^1.0.1",
+    "@nestjslatam/aop": "^1.1.0",
+    "@nestjslatam/aop.aspects": "^1.1.0",
+    "@nestjslatam/aop.aspects.logger": "^1.1.0",
+    "@nestjslatam/aop.nestjs": "^1.1.0",
     "nestjs-request-context": "^3.0.0"
   },
   "types": "dist/index.d.ts",
