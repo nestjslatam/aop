@@ -25,6 +25,35 @@ const injectExecutor = (target: any): void => {
   Reflect.defineMetadata(AOP_EXECUTOR_INJECTED, true, owner);
 };
 
+let yaAviso = false;
+
+/**
+ * Says out loud that the aspects are not armed.
+ *
+ * Without an executor the wrapper calls the original method and returns: the
+ * retry never retries, the span never opens and the log never comes out, and
+ * nothing points at it. One line per process is enough to turn an afternoon of
+ * hunting into a fixed import.
+ *
+ * It is a warning and not an exception on purpose: decorating a plain class and
+ * running it without the container is legitimate, and the library documents
+ * that fallback.
+ */
+const avisarUnaVez = (target: any, propertyKey: string | symbol): void => {
+  if (yaAviso) return;
+
+  yaAviso = true;
+
+  // eslint-disable-next-line no-console
+  console.warn(
+    `[aop] No aspect executor is armed: ${
+      target?.constructor?.name ?? 'Unknown'
+    }.${String(propertyKey)} ` +
+      'and every other decorated method are running with their aspects disabled. ' +
+      'Import AopModule.forRoot() in the application, or call AopRegistry.set() outside NestJS.',
+  );
+};
+
 const wrap = (
   target: any,
   propertyKey: string | symbol,
@@ -42,7 +71,11 @@ const wrap = (
     const executor: IAspectExecutor | undefined =
       this?.[AOP_EXECUTOR_PROPERTY] ?? AopRegistry.get();
 
-    if (!executor) return original.apply(this, args);
+    if (!executor) {
+      avisarUnaVez(target, propertyKey);
+
+      return original.apply(this, args);
+    }
 
     const joinPoint = new JoinPoint({
       args,

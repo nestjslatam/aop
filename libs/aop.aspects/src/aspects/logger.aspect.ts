@@ -82,13 +82,18 @@ export class LoggerAspect extends OnMethodBoundaryAspect<
     joinPoint: IJoinPoint,
     context: ILoggerAspectContext,
   ): void {
-    if (context.options.logReturn === false) return;
+    const { logReturn, isFailure } = context.options;
+
+    // `logReturn` decide si el VALOR se registra, no si la fase ocurre. Saltarse `onCall` dejaba
+    // sin narrar la llamada completada a quien apagaba el retorno por no querer datos en el log.
+    const metadata = this.getMetadata(joinPoint, context);
+    const failed = isFailure?.(joinPoint.returnValue, joinPoint) === true;
 
     context.state.logger?.onCall(
-      this.getMetadata(joinPoint, context),
+      failed ? { ...metadata, failed } : metadata,
       new Result(
         joinPoint.methodInfo.returnType ?? joinPoint.methodInfo.name,
-        joinPoint.returnValue,
+        logReturn === false ? undefined : joinPoint.returnValue,
       ),
     );
   }
