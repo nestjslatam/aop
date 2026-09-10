@@ -49,7 +49,11 @@ jobs:
   changeset:
     name: Changeset
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
+    # The version pull request raises the package.json versions and consumes the
+    # changeset in the same commit, so this check would always fail on it.
+    if: >-
+      github.event_name == 'pull_request' &&
+      !startsWith(github.head_ref, 'changeset-release/')
 
     steps:
       - uses: actions/checkout@v5
