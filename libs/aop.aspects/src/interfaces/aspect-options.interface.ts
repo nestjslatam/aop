@@ -29,6 +29,18 @@ export interface IRetryAspectOptions extends IAspectOptions {
   backoff?: 'fixed' | 'exponential';
   /** Retry only these error types. Retries every error when omitted. */
   errorTypes?: Array<new (...args: any[]) => Error>;
+  /**
+   * Decides per error whether another attempt is worth it.
+   *
+   * `errorTypes` cannot express a driver that reports every failure through a
+   * single class: a SQL Server deadlock and a duplicate key both arrive as the
+   * same `RequestError` and are told apart by a numeric code. Retrying the
+   * duplicate key would write twice.
+   *
+   * Both filters must pass when both are given, so adding one never silently
+   * widens the other. `attempt` is zero-based.
+   */
+  shouldRetry?: (error: any, attempt: number) => boolean;
   /** `true` swallows the error once the attempts are exhausted. */
   handleException?: boolean;
 }
